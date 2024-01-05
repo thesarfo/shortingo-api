@@ -9,10 +9,10 @@ import User, { IUser } from '../models/userModel';
 import urlModel, { IURL } from "../models/urlModel";
 
 export const createUser = async ( req: Request, res: Response) => {
-    const { name, email, password }: { name: string, email: string, password: string} = req.body;
+    const { username, email, password }: { username: string, email: string, password: string} = req.body;
 
     try {
-        if (!( email && password && name )){
+        if (!( email && password && username )){
             res.status(400).json("You cant leave a field empty")
         }
 
@@ -26,7 +26,7 @@ export const createUser = async ( req: Request, res: Response) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const newUser: IUser = new User({
-            name,
+            username,
             email,
             password: hashedPassword
         });
@@ -42,10 +42,10 @@ export const createUser = async ( req: Request, res: Response) => {
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-    const { email, password }: { email: string, password: string} = req.body; 
+    const { username, email, password }: { username: string, email: string, password: string} = req.body; 
 
     try {
-        if (!(email && password)){
+        if (!(username && email && password)){
             return res.status(400).json({"message": "You can't leave a field empty"});
         }
 
