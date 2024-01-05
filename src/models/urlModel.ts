@@ -15,7 +15,7 @@ export const urlSchema = new Schema<IURL>({
     date: { type: Date, default: Date.now },
     shortLink: { type: String, },
     ogLink: { type: String, required: true },
-    starred: { type: Boolean, required: true, default: false},
+    starred: { type: Boolean, default: false},
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 });
 

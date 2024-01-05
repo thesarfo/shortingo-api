@@ -37,17 +37,17 @@ export const createUrl = async (req: Request, res: Response) => {
 };
 
 
-export const getAllUrls = async (req: Request, res: Response) => {
-    try {
-        const allUrls: IURL[] = await urlModel.find({}).exec();
-        res.status(200).json(allUrls);
-    } catch (error: any) {
-        res.status(500).json({
-            message: 'Internal Server Error',
-            error: error.message,
-        });
-    }
-};
+// export const getAllUrls = async (req: Request, res: Response) => {
+//     try {
+//         const allUrls: IURL[] = await urlModel.find({}).exec();
+//         res.status(200).json(allUrls);
+//     } catch (error: any) {
+//         res.status(500).json({
+//             message: 'Internal Server Error',
+//             error: error.message,
+//         });
+//     }
+// };
 
 
 export const getUserURLs = async (req: Request, res: Response) => {
@@ -64,8 +64,22 @@ export const getUserURLs = async (req: Request, res: Response) => {
     }
 };
 
+export const getUrlById = async (req: Request, res: Response) => {
+    const urlId = req.params.id;
 
-
+    try {
+        const url: IURL | null = await urlModel.findById(urlId).exec();
+        if (!url) {
+            return res.status(404).json({ message: 'URL not found' });
+        }
+        res.status(200).json(url);
+    } catch (error: any) {
+        res.status(500).json({
+            message: 'Internal Server Error',
+            error: error.message,
+        });
+    }
+};
 
 export const updateUrl = async (req: Request, res: Response) => {
     const urlId = req.params.id;
