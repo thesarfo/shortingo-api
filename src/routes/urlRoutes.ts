@@ -1,15 +1,16 @@
 import express from "express";
 
 import {
-    createUrl, deleteUrl, getAllUrls, getUrl, updateUrl
+    createUrl, deleteUrl, getAllUrls, getUserURLs, updateUrl
 } from "../controllers/urlController";
 import { verifyToken } from "../middleware/verifyToken";
 
 const router = express.Router();
 
 router.post("/create", verifyToken, createUrl); 
-router.get("/getAll", verifyToken, getAllUrls); 
-router.get("/getOne/:id", verifyToken, getUrl); 
-router.put("/update/:id", verifyToken, updateUrl);
-router.delete("/delete/:id", verifyToken, deleteUrl); 
+router.get("/getAll/:id", verifyToken, getUserURLs); 
+// router.get("/getOne/:id", verifyToken, );
+// router.put("/update/:id", verifyToken, updateUrl);
+// router.delete("/delete/:id", verifyToken, deleteUrl); 
+
 export default router;

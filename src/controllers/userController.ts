@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import User, { IUser } from '../models/userModel';
+import urlModel, { IURL } from "../models/urlModel";
 
 export const createUser = async ( req: Request, res: Response) => {
     const { name, email, password }: { name: string, email: string, password: string} = req.body;
@@ -40,49 +41,6 @@ export const createUser = async ( req: Request, res: Response) => {
     }
 };
 
-
-// export const loginUser = async (req: Request, res: Response) => {
-//     const { email, password }: { email: string, password: string} = req.body; 
-
-//     try{
-//         if (!(email && password )){
-//             return res.status(400).json({"message": "You cant leave a field empty"});
-//         }
-
-//         const foundUser: IUser | null = await User.findOne({ email }).lean();
-//         if (!foundUser){
-//             return res.status(400).json({"message": "User not found"})
-//         }
-//         const passwordMatch = await bcrypt.compare(password, String(foundUser.password));
-
-//         const secretKey: string | undefined = process.env.SECRET_KEY as string;
-
-
-//         if (passwordMatch) {
-
-//             const token = jwt.sign({
-//                  userId: foundUser._id,
-//                  email: foundUser.email,
-//              }, secretKey, { expiresIn: "1h" })
-            
-//             return res.status(200).json({ 
-//                 "message": "Login Successful",
-//                 "email": foundUser.email,
-//                 "token": token
-//              });
-
-        
-//         } else {
-//         return res.status(401).json("Invalid credentials");
-//         }
-//     } catch(error: any){
-//         res.status(500).json({
-//             message: "Failed to login user",
-//             error: error.message
-//         });
-//     }
-// }
-
 export const loginUser = async (req: Request, res: Response) => {
     const { email, password }: { email: string, password: string} = req.body; 
 
@@ -111,6 +69,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
             return res.status(200).json({ 
                 "message": "Login Successful",
+                "userId": foundUser._id,
                 "token": token
             });
         } else {
@@ -123,3 +82,17 @@ export const loginUser = async (req: Request, res: Response) => {
         });
     }
 }
+
+export const getUserURLs = async (req: Request, res: Response) => {
+    const { id: userId } = req.params;
+
+    try {
+        const userURLs: IURL[] = await urlModel.find({ user: userId });
+        res.status(200).json(userURLs);
+    } catch (error: any) {
+        res.status(500).json({
+            message: "Failed to fetch user's URLs",
+            error: error.message
+        });
+    }
+};

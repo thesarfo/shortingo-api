@@ -1,24 +1,24 @@
-import mongoose, { Document, Schema, Model } from "mongoose";
+import mongoose, { Document, Schema, Model, Types } from "mongoose";
+import { IUser } from "./userModel";
 
 export interface IURL extends Document {
-    // id: number,
     title: string,
     date: Date,
     shortLink: string,
     ogLink: string,
-    starred: boolean
+    starred: boolean,
+    user: Types.ObjectId | IUser,
 }
 
 export const urlSchema = new Schema<IURL>({
-    // id: { type: Number, required: true },
     title: { type: String, required: true },
     date: { type: Date, default: Date.now },
     shortLink: { type: String, },
     ogLink: { type: String, required: true },
-    starred: { type: Boolean, required: true, default: false}
+    starred: { type: Boolean, required: true, default: false},
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 });
 
-// urlSchema.pre('save', assignIdMiddleware);
 
 const urlModel: Model<IURL> = mongoose.model<IURL>('URL', urlSchema);
 

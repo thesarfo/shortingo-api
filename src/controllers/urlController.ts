@@ -1,27 +1,41 @@
 import { Request, Response } from 'express';
+import jwt from "jsonwebtoken";
 import urlModel, { IURL } from "../models/urlModel";
 
+
+
 export const createUrl = async (req: Request, res: Response) => {
-    const { title, date, shortLink, ogLink, starred }:IURL = req.body;
+    const { title, date, shortLink, ogLink, starred }: IURL = req.body;
+
+    const token = req.headers.authorization?.split(' ')[1]; 
+
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized: Token missing' });
+    }
 
     try {
+        const decoded: any = jwt.verify(token, process.env.SECRET_KEY || '');
+
+        const userId = decoded.userId;
         const newUrl: IURL = new urlModel({
             title,
             date,
             shortLink,
             ogLink,
-            starred
+            starred,
+            user: userId 
         });
 
         const savedUrl: IURL = await newUrl.save();
         res.status(201).json(savedUrl);
     } catch (error: any) {
         res.status(500).json({
-            message: "Failed to create URL",
+            message: 'Failed to create URL',
             error: error.message
         });
     }
 };
+
 
 export const getAllUrls = async (req: Request, res: Response) => {
     try {
@@ -36,22 +50,22 @@ export const getAllUrls = async (req: Request, res: Response) => {
 };
 
 
-export const getUrl = async (req: Request, res: Response) => {
-    const urlId = req.params.id;
+export const getUserURLs = async (req: Request, res: Response) => {
+    const userId = req.params.id;
 
     try {
-        const url = await urlModel.findById(urlId);
-        if (!url) {
-            return res.status(404).json({ message: 'URL not found' });
-        }
-        res.status(200).json(url);
+        const userURLs: IURL[] = await urlModel.find({ user: userId }).exec();
+        res.status(200).json(userURLs);
     } catch (error: any) {
         res.status(500).json({
-            message: 'Internal Server Error',
+            message: "Failed to fetch user's URLs",
             error: error.message,
         });
     }
 };
+
+
+
 
 export const updateUrl = async (req: Request, res: Response) => {
     const urlId = req.params.id;
