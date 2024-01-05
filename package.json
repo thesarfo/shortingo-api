@@ -2,9 +2,9 @@
   "name": "shortingo",
   "version": "1.0.0",
   "description": "",
-  "main": "server.ts",
+  "main": "server.js",
   "scripts": {
-    "start": "ts-node src/server.ts",
+    "start": "ts-node-dev src/server.ts",
     "watch": "nodemon src/server.ts",
     "build": "npm install && tsc",
     "prod": "node dist/server.js",
