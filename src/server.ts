@@ -11,10 +11,6 @@ const MONGO_URL: string = process.env.MONGO_URL!;
 
 const server: http.Server = http.createServer(app);
 
-// if (!MONGO_URL){
-//     throw new Error("MongoDB URL not in env variable")
-// }
-
 mongoose.connection.once('open', ()=>{
     console.log("MongoDB connection is ready")
 });
