@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import urlModel, { IURL } from "../models/urlModel";
 
 export const createUrl = async (req: Request, res: Response) => {
-    const { title, date, shortLink, ogLink, starred }: { title: string, date: Date, shortLink: string, ogLink: string, starred: boolean } = req.body;
+    const { title, date, shortLink, ogLink, starred }:IURL = req.body;
 
     try {
         const newUrl: IURL = new urlModel({
@@ -17,17 +17,30 @@ export const createUrl = async (req: Request, res: Response) => {
         res.status(201).json(savedUrl);
     } catch (error: any) {
         res.status(500).json({
-            message: "Internal Server Error",
+            message: "Failed to create URL",
             error: error.message
         });
     }
 };
 
+export const getAllUrls = async (req: Request, res: Response) => {
+    try {
+        const allUrls: IURL[] = await urlModel.find({}).exec();
+        res.status(200).json(allUrls);
+    } catch (error: any) {
+        res.status(500).json({
+            message: 'Internal Server Error',
+            error: error.message,
+        });
+    }
+};
+
+
 export const getUrl = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const urlId = req.params.id;
 
     try {
-        const url: IURL | null = await urlModel.findById(id);
+        const url = await urlModel.findById(urlId);
         if (!url) {
             return res.status(404).json({ message: 'URL not found' });
         }
@@ -41,11 +54,11 @@ export const getUrl = async (req: Request, res: Response) => {
 };
 
 export const updateUrl = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const { title, date, shortLink, ogLink, starred }: { title: string; date: Date; shortLink: string; ogLink: string; starred: boolean } = req.body;
+    const urlId = req.params.id;
+    const { title, date, shortLink, ogLink, starred }: IURL = req.body;
 
     try {
-        const url: IURL | null = await urlModel.findById(id);
+        const url: IURL | null = await urlModel.findById(urlId).exec();
         if (!url) {
             return res.status(404).json({ message: 'URL not found' });
         }
@@ -67,10 +80,11 @@ export const updateUrl = async (req: Request, res: Response) => {
 };
 
 export const deleteUrl = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const urlId: string = req.params.id;
 
     try {
-        const deletedUrl: IURL | null = await urlModel.findByIdAndDelete(id);
+        console.log(`Deleting url with ID: ${urlId}`)
+        const deletedUrl = await urlModel.findByIdAndDelete(urlId).exec();
         if (!deletedUrl) {
             return res.status(404).json({ message: 'URL not found' });
         }

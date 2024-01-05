@@ -1,12 +1,19 @@
 import http from "http";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 import app from "./app";
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URL: string = "mongodb://localhost:27017/shortingoDB";
+const MONGO_URL: string = process.env.MONGO_URL!;
 
 const server: http.Server = http.createServer(app);
+
+// if (!MONGO_URL){
+//     throw new Error("MongoDB URL not in env variable")
+// }
 
 mongoose.connection.once('open', ()=>{
     console.log("MongoDB connection is ready")
