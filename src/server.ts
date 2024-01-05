@@ -8,7 +8,7 @@ import app from "./app";
 
 const PORT = process.env.PORT || 5000;
 const MONGO_URL: string = process.env.MONGO_URL!;
-const RETRY_WRITES = process.env.RETRY_WRITES;
+const RETRY_WRITES = true;
 
 const server: http.Server = http.createServer(app);
 
