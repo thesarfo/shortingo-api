@@ -1,7 +1,7 @@
 import express from "express";
 
 import {
-    createUrl, deleteUrl, getUrlById, /*getAllUrls*/ getUserURLs, updateUrl
+    createUrl, deleteUrl, getUrlById, getUserURLs, updateUrl
 } from "../controllers/urlController";
 import { verifyToken } from "../middleware/verifyToken";
 

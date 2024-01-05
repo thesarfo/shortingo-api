@@ -36,20 +36,6 @@ export const createUrl = async (req: Request, res: Response) => {
     }
 };
 
-
-// export const getAllUrls = async (req: Request, res: Response) => {
-//     try {
-//         const allUrls: IURL[] = await urlModel.find({}).exec();
-//         res.status(200).json(allUrls);
-//     } catch (error: any) {
-//         res.status(500).json({
-//             message: 'Internal Server Error',
-//             error: error.message,
-//         });
-//     }
-// };
-
-
 export const getUserURLs = async (req: Request, res: Response) => {
     const userId = req.params.id;
 
