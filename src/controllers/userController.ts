@@ -42,10 +42,10 @@ export const createUser = async ( req: Request, res: Response) => {
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-    const { username, email, password }: { username: string, email: string, password: string} = req.body; 
+    const { email, password }: { email: string, password: string } = req.body; 
 
     try {
-        if (!(username && email && password)){
+        if (!( email && password)){
             return res.status(400).json({"message": "You can't leave a field empty"});
         }
 
