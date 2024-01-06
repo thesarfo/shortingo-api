@@ -3,7 +3,7 @@ import { IUser } from "./userModel";
 
 export interface IURL extends Document {
     title: string,
-    date: Date,
+    date: string,
     shortLink: string,
     ogLink: string,
     starred: boolean,
@@ -12,7 +12,7 @@ export interface IURL extends Document {
 
 export const urlSchema = new Schema<IURL>({
     title: { type: String, required: true },
-    date: { type: Date, default: Date.now },
+    date: { type: String, default: new Date().toISOString() },
     shortLink: { type: String },
     ogLink: { type: String },
     starred: { type: Boolean, default: false},

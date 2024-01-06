@@ -23,7 +23,7 @@ export const createUrl = async (req: Request, res: Response) => {
             ogLink,
             starred,
             date,
-            user: userId 
+            user: userId
         });
 
         const savedUrl: IURL = await newUrl.save();
