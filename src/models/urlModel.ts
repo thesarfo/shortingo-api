@@ -12,7 +12,7 @@ export interface IURL extends Document {
 
 export const urlSchema = new Schema<IURL>({
     title: { type: String, required: true },
-    date: { type: Date },
+    date: { type: Date, default: Date.now },
     shortLink: { type: String, required: true },
     ogLink: { type: String, required: true },
     starred: { type: Boolean, default: false},
