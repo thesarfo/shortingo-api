@@ -5,7 +5,7 @@ import urlModel, { IURL } from "../models/urlModel";
 
 
 export const createUrl = async (req: Request, res: Response) => {
-    const { title, date, shortLink, ogLink, starred }: IURL = req.body;
+    const { title, shortLink, ogLink, starred, date }: IURL = req.body;
 
     const token = req.headers.authorization?.split(' ')[1]; 
 
@@ -19,10 +19,10 @@ export const createUrl = async (req: Request, res: Response) => {
         const userId = decoded.userId;
         const newUrl: IURL = new urlModel({
             title,
-            date,
             shortLink,
             ogLink,
             starred,
+            date,
             user: userId 
         });
 
