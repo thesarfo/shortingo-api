@@ -70,6 +70,8 @@ export const loginUser = async (req: Request, res: Response) => {
             return res.status(200).json({ 
                 "message": "Login Successful",
                 "userId": foundUser._id,
+                "email": foundUser.email,
+                "username": foundUser.username,
                 "token": token
             });
         } else {
