@@ -1,8 +1,11 @@
 import express from "express";
 
-import {
-    createUrl, deleteUrl, searchUrl, getUserURLs, patchUrl
-} from "../controllers/urlController";
+import { createUrl } from "../controllers/create";
+import { getUserURLs } from "../controllers/retrieve";
+import { patchUrl } from "../controllers/update";
+import { searchUrl } from "../controllers/search";
+import { deleteUrl } from "../controllers/delete";
+
 import { verifyToken } from "../middleware/verifyToken";
 
 const router = express.Router();
